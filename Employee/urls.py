@@ -7,6 +7,8 @@ from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshVie
 router = DefaultRouter()
 
 router.register('employee', views.EmployeeRegisterViewSet, basename='employee')
+router.register('login', views.EmployeeLoginViewSet, basename='login'),
+router.register('display', views.EmployeeProfileViewSet, basename='display')
 
 urlpatterns = [
     path('', include(router.urls)),
