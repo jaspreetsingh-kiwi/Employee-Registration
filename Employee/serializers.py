@@ -56,7 +56,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.ModelSerializer):
     """
-     Serializers Login allows user to logged-in.
+     Serializers Login allows user to log-in
      """
     username = serializers.CharField(max_length=10, required=True)
     password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True)
@@ -72,11 +72,11 @@ class LoginSerializer(serializers.ModelSerializer):
         """
         Validate if username or password is incorrect.
         """
-        username = data.get('username', None)
-        password = data.get('password', None)
+        username = data.get('username')
+        password = data.get('password')
 
         emp = EmployeeDetails.objects.filter(username=username).first()
-        if emp is not None:
+        if not emp:
             raise serializers.ValidationError('Username is Incorrect')
 
         if not check_password(password):

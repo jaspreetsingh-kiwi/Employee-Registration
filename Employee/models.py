@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 # Create your models here.
@@ -18,3 +19,13 @@ class EmployeeDetails(AbstractUser):
     class Meta:
         db_table = 'Employee'
 
+
+def get_token_for_user(user):
+    """
+        Used to generate both refresh and access token
+    """
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token)
+    }
