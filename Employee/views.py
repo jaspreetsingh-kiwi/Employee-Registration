@@ -3,23 +3,24 @@ from django.contrib import auth
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .messages import CREATED_SUCCESSFULLY, BAD_REQUEST
-from .models import EmployeeDetails, get_token_for_user
+from .models import EmployeeDetails
 from .serializers import RegistrationSerializer, LoginSerializer, EmployeeProfileSerializer
 
 
 # Create your views here.
 
-# def get_token_for_user(user):
-#     """
-#         Used to generate both refresh and access token
-#     """
-#     refresh = RefreshToken.for_user(user)
-#     return {
-#         'refresh': str(refresh),
-#         'access': str(refresh.access_token)
-#     }
+def get_token_for_user(user):
+    """
+        Used to generate both refresh and access token
+    """
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token)
+    }
 
 
 class EmployeeRegisterViewSet(viewsets.ModelViewSet):

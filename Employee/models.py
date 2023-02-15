@@ -19,13 +19,3 @@ class EmployeeDetails(AbstractUser):
     class Meta:
         db_table = 'Employee'
 
-
-def get_token_for_user(user):
-    """
-        Used to generate both refresh and access token
-    """
-    refresh = RefreshToken.for_user(user)
-    return {
-        'refresh': str(refresh),
-        'access': str(refresh.access_token)
-    }
