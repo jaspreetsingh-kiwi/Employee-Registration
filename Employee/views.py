@@ -63,7 +63,9 @@ class EmployeeLoginViewSet(viewsets.ModelViewSet):
         return EmployeeDetails.objects.filter().order_by('id')
 
     def create(self, request, *args, **kwargs):
-
+        """
+        Allows only valid user to login.
+        """
         username = request.data.get('username')
         password = request.data.get('password')
 
