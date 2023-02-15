@@ -75,7 +75,7 @@ class LoginSerializer(serializers.ModelSerializer):
         username = data.get('username')
         password = data.get('password')
 
-        emp = EmployeeDetails.objects.filter(username=username).first()
+        emp = EmployeeDetails.objects.filter(username=username)
         if not emp:
             raise serializers.ValidationError('Username is Incorrect')
 
