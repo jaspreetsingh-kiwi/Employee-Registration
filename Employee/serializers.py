@@ -15,7 +15,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,error_messages={'required': ERROR_MESSAGES["PASSWORD_REQUIRED"]})
     password2 = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,error_messages={'required': ERROR_MESSAGES["PASSWORD_CONFIRMED"]})
 
-
     def validate(self, data):
             """
             Validate if password is correct,username or email already exists.
@@ -32,20 +31,49 @@ class RegistrationSerializer(serializers.ModelSerializer):
                     raise serializers.ValidationError(ERROR_MESSAGES["EMAIL_EXISTS"])
             return data
 
+    def validate_first_name(self, value):
+        """
+        Validate first name to ensure it contains only alphabetic characters, and no spaces
+        """
+        if not value.isalpha() or ' ' in value:
+            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_FIRST_NAME"])
+        return value
+
+
+    def validate_last_name(self, value):
+        """
+        Validate last name to ensure it contains only alphabetic characters, and no spaces
+        """
+        if not value.isalpha() or ' ' in value:
+            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_LAST_NAME"])
+        return value
+
+    def validate_email(self, value):
+        """
+        Validate email address to ensure it is in a valid format, and contains no spaces
+        """
+        if ' ' in value or '@' not in value:
+            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_EMAIL"])
+        return value
+
+    def validate_username(self, value):
+        """
+        Validate username to ensure it only contains alphanumeric characters and underscores, and no spaces
+        """
+        if not value.isalnum() or ' ' in value:
+            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_USERNAME"])
+        return value
+
     def validate_password(self, value):
         """
         Validate if password contains uppercase, lowercase, digit, space and special character.
         """
-        if not any(char.isupper() for char in value):
-            raise serializers.ValidationError(ERROR_MESSAGES["IS_UPPER"])
-        if not any(char.islower() for char in value):
-            raise serializers.ValidationError(ERROR_MESSAGES["IS_LOWER"])
-        if not any(char.isdigit() for char in value):
-            raise serializers.ValidationError(ERROR_MESSAGES["IS_DIGIT"])
-        if not any(char in "!@#$%^&*()-_+=[]{};:'\"<>,.?/\\|" for char in value):
-            raise serializers.ValidationError(ERROR_MESSAGES["IS_SPECIAL"])
-        if " " in value:
-            raise serializers.ValidationError(ERROR_MESSAGES["NO_SPACE"])
+        if not any(char.isupper() for char in value) or \
+           not any(char.islower() for char in value) or \
+           not any(char.isdigit() for char in value) or \
+           not any(char in "!@#$%^&*()-_+=[]{};:'\"<>,.?/\\|" for char in value) or \
+           " " in value:
+           raise serializers.ValidationError(ERROR_MESSAGES["INVALID_PASSWORD"])
         return value
 
     class Meta:

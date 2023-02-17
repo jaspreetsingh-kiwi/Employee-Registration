@@ -1,8 +1,3 @@
-CREATED_SUCCESSFULLY = "Employee created successfully."
-BAD_REQUEST = "Invalid data provided."
-LOGIN_SUCCESSFULLY = "Login Successfully."
-DELETED_SUCCESSFULLY = "Employee Deleted."
-
 # Dictionaries
 ERROR_MESSAGES = {
     "FIRST_NAME_REQUIRED" : "Please provide a first name.",
@@ -12,18 +7,19 @@ ERROR_MESSAGES = {
     "PASSWORD_REQUIRED" : "Please provide a password.",
     "PASSWORD_CONFIRMED": "Please confirm password.",
     "PASSWORDS_DO_NOT_MATCH" : "Passwords do not match.",
+
     "USERNAME_EXISTS": "Username already taken.",
     "EMAIL_EXISTS" : "Email already exists.",
-    "INVALID_DATA" : "Invalid data provided.",
-    'IS_UPPER' : "Password must contain atleast one uppercase letter.",
-    'IS_LOWER': "Password must contain atleast one lowercase letter.",
-    'IS_DIGIT' : "Password must contain atleast one digit.",
-    "IS_SPECIAL" : "Password must contain at one special character ",
-    "NO_SPACE" : "Pasword must not contain any spaces",
+
+    "INVALID_FIRST_NAME": "First name must contain only alphabetic characters, and no spaces",
+    "INVALID_LAST_NAME": "Last name must contain only alphabetic characters, and no spaces",
+    "INVALID_EMAIL": "Email address should be in a valid format, and contains no spaces",
+    "INVALID_USERNAME": "Username must contain alphanumeric characters and underscores, and no spaces",
+    "INVALID_PASSWORD": "Password is invalid.Password must contain uppercase, lowercase, digit, and special character and no spaces.",
 }
 
 SUCCESS_MESSAGES = {
-    'CREATED_SUCCESSFULLY': 'Employee created successfully.',
-    'LOGIN_SUCCESSFULLY': 'Employee created successfully.',
+    "CREATED_SUCCESSFULLY": 'Employee created successfully.',
+    'LOGIN_SUCCESSFULLY': 'Employee login successfully.',
 }
 

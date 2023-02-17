@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .messages import CREATED_SUCCESSFULLY, BAD_REQUEST, LOGIN_SUCCESSFULLY
+from .messages import *
 from .models import EmployeeDetails
 from .serializers import RegistrationSerializer, LoginSerializer, EmployeeProfileSerializer
 from django.contrib.auth.hashers import check_password
@@ -25,8 +25,8 @@ class EmployeeRegisterViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
-            return Response({'message': CREATED_SUCCESSFULLY, 'data': serializer.data}, status=status.HTTP_201_CREATED)
-        return Response({'message': BAD_REQUEST}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': SUCCESS_MESSAGES["CREATED_SUCCESSFULLY"], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EmployeeLoginViewSet(viewsets.ModelViewSet):
@@ -48,10 +48,10 @@ class EmployeeLoginViewSet(viewsets.ModelViewSet):
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-                'message' : LOGIN_SUCCESSFULLY,
+                'message' : SUCCESS_MESSAGES["LOGIN_SUCCESSFULLY"],
             }, status=status.HTTP_200_OK)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'errors':serializer.errors}, status=status.HTTP_401_UNAUTHORIZED)
 
 class EmployeeProfileViewSet(viewsets.ModelViewSet):
     """
