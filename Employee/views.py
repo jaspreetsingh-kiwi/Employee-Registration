@@ -1,4 +1,5 @@
 # Create your views here.
+import rest_framework_simplejwt.authentication
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .messages import *
 from .models import EmployeeDetails
 from .serializers import RegistrationSerializer, LoginSerializer, EmployeeProfileSerializer
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Create your views here.
 class EmployeeRegisterViewSet(viewsets.ModelViewSet):
@@ -56,6 +57,7 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
     """
     The EmployeeProfileViewSet display the data.
     """
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = EmployeeProfileSerializer
 
