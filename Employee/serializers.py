@@ -1,4 +1,3 @@
-from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from .models import EmployeeDetails
 from .messages import *
@@ -29,6 +28,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
                     raise serializers.ValidationError(ERROR_MESSAGES["USERNAME_EXISTS"])
                 elif EmployeeDetails.objects.filter(email=email).exists():
                     raise serializers.ValidationError(ERROR_MESSAGES["EMAIL_EXISTS"])
+                else :
+                    raise serializers.ValidationError(ERROR_MESSAGES[ "PASSWORDS_DO_NOT_MATCH"])
             return data
 
     def validate_first_name(self, value):
@@ -76,13 +77,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_PASSWORD"])
         return value
 
-    class Meta:
-        """
-         Use the Meta class to specify the model and fields that the serializer should work with
-        """
-        model = EmployeeDetails
-        fields = ['id', 'first_name', 'last_name', 'email', 'username', 'password', 'password2']
-
     def create(self, validated_data):
         """
         Override the create method to add custom behavior when creating a new Employee instance
@@ -92,6 +86,13 @@ class RegistrationSerializer(serializers.ModelSerializer):
         emp.set_password(validated_data['password'])
         emp.save()
         return emp
+
+    class Meta:
+        """
+         Use the Meta class to specify the model and fields that the serializer should work with
+        """
+        model = EmployeeDetails
+        fields = ['id', 'first_name', 'last_name', 'email', 'username', 'password', 'password2']
 
 class LoginSerializer(serializers.ModelSerializer):
     """
@@ -123,12 +124,12 @@ class LoginSerializer(serializers.ModelSerializer):
 
 class EmployeeProfileSerializer(serializers.ModelSerializer):
     """
-     Serializers EmployeeProfile display the data to logged-in user.
-     """
-    first_name = serializers.CharField(max_length=20, required=True, error_messages={'required': 'Please provide a first name.'})
-    last_name = serializers.CharField(max_length=20, required=True, error_messages={'required': 'Please provide a last name.'})
-    email = serializers.EmailField(required=True, error_messages={'required': 'Please provide a email.'})
-    username = serializers.CharField(max_length=10, required=True, error_messages={'required': 'Please provide a username.'})
+    Serializers EmployeeProfile display the data to logged-in user.
+    """
+    first_name = serializers.CharField(max_length=20, required=True,error_messages={'required': ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
+    last_name = serializers.CharField(max_length=20, required=True,error_messages={'required': ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
+    email = serializers.EmailField(required=True, error_messages={'required': ERROR_MESSAGES["EMAIL_REQUIRED"]})
+    username = serializers.CharField(max_length=10, required=True,error_messages={'required': ERROR_MESSAGES["USERNAME_REQUIRED"]})
 
     class Meta:
         """
