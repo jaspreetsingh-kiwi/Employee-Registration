@@ -1,53 +1,45 @@
-# Dictionaries
-ERROR_MESSAGES = {
-    "FIRST_NAME_REQUIRED" : "Please provide a first name.",
-    "LAST_NAME_REQUIRED" : "Please provide a last name.",
-    "EMAIL_REQUIRED" : "Please provide an email.",
-    "USERNAME_REQUIRED" : "Please provide a username.",
-    "PASSWORD_REQUIRED" : "Please provide a password.",
-    "PASSWORD_CONFIRMED": "Please confirm password.",
-    "PASSWORDS_DO_NOT_MATCH" : "Passwords do not match.",
 
-    "USERNAME_EXISTS": "Username already taken.",
-    "EMAIL_EXISTS" : "Email already exists.",
-    "INVALID_FIRST_NAME": "First name must contain only alphabetic characters, and no spaces",
-    "INVALID_LAST_NAME": "Last name must contain only alphabetic characters, and no spaces",
-    "INVALID_EMAIL": "Email address should be in a valid format, and contains no spaces",
-    "INVALID_USERNAME": "Username must contain alphanumeric characters and underscores, and no spaces",
-    "INVALID_PASSWORD": "Password is invalid.Password must contain uppercase, lowercase, digit, and special character and no spaces.",
-    "UNAUTHORIZED": "Cannot create data",
+Validation = {
+    'first_name': {
+        "blank": "Please provide a first name.",
+        "invalid": "First name cannot be blank. First name must contain only alphabetic characters, and no spaces",
+    },
+    'last_name': {
+        "blank": "Please provide a last name.",
+        "invalid": "Last name cannot be blank.Last name must contain only alphabetic characters, and no spaces",
+    },
+    'email':{
+        "blank": "Please provide a email.",
+        "invalid": "Email is not valid",
+        "exists": "Email already exists",
+    },
+    'username': {
+        "blank": "Please provide a username.",
+        "invalid": "Username must contain alphanumeric characters, and no spaces",
+        "exists": "Username already taken",
 
+    },
+    'password': {
+        "blank": "Please provide a username.",
+        "invalid": "Password is invalid.Password must contain uppercase, lowercase, digit, and special character and no spaces.",
+        "do_not_match":"Passwords do not match."
+    },
 }
 
-# Define a nested dictionary
-VALIDATION = {
-    'required': {
-        'first_name': ERROR_MESSAGES['FIRST_NAME_REQUIRED'],
-        'last_name': ERROR_MESSAGES['LAST_NAME_REQUIRED'],
-        'email': ERROR_MESSAGES['EMAIL_REQUIRED'],
-        'username': ERROR_MESSAGES['USERNAME_REQUIRED'],
-        'password': ERROR_MESSAGES['PASSWORD_REQUIRED'],
-        'password_confirm': ERROR_MESSAGES['PASSWORD_CONFIRMED']
+RESPONSE_MESSAGES = {
+    "registration":{
+    "success":"Employee register successfully",
+    "failed":"Invalid Credentials"
     },
-    'invalid': {
-        'first_name': ERROR_MESSAGES['INVALID_FIRST_NAME'],
-        'last_name': ERROR_MESSAGES['INVALID_LAST_NAME'],
-        'email': ERROR_MESSAGES['INVALID_EMAIL'],
-        'username': ERROR_MESSAGES['INVALID_USERNAME'],
-        'password': ERROR_MESSAGES['INVALID_PASSWORD']
-    },
-    'exists': {
-        'username': ERROR_MESSAGES['USERNAME_EXISTS'],
-        'email': ERROR_MESSAGES['EMAIL_EXISTS']
-    },
-    'password_mismatch': ERROR_MESSAGES['PASSWORDS_DO_NOT_MATCH']
+    "login":{
+        "success":"Login successfully",
+        "failed":"Login failed.Invalid Credentials",
+        }
 }
-
 SUCCESS_MESSAGES = {
-    "CREATED_SUCCESSFULLY": 'Employee created successfully.',
-    'LOGIN_SUCCESSFULLY': 'Employee login successfully.',
-    "UPDATED_SUCCESSFULLY" : "Employee updated successfully",
-    'DELETED_SUCCESSFULLY': 'Employee deleted successfully.',
+    "CREATED_SUCCESSFULLY" : "Employee created successfully",
+    "UPDATE_SUCCESSFULLY": "Employee updated successfully",
+    "DELETE_SUCCESSFULLY": "Employee deleted successfully",
 
 }
 

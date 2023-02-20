@@ -25,7 +25,7 @@ class EmployeeRegisterViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
-            return Response({'message': SUCCESS_MESSAGES["CREATED_SUCCESSFULLY"], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': RESPONSE_MESSAGES['registration']['success'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -48,7 +48,7 @@ class EmployeeLoginViewSet(viewsets.ModelViewSet):
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-                'message' : SUCCESS_MESSAGES["LOGIN_SUCCESSFULLY"],
+                'message' : RESPONSE_MESSAGES['login']['success'],
             }, status=status.HTTP_200_OK)
 
         return Response({'errors':serializer.errors}, status=status.HTTP_401_UNAUTHORIZED)
@@ -89,7 +89,7 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
             print(serializer.data)
-            return Response({'message': SUCCESS_MESSAGES["CREATED_SUCCESSFULLY"], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message':SUCCESS_MESSAGES['CREATED_SUCCESSFULLY'] , 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response({'errors': serializer.errors}, status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):

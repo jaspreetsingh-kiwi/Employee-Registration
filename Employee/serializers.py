@@ -7,12 +7,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
     """
     Serializers registration requests and creates a new user.
     """
-    first_name = serializers.CharField(max_length=20, required=True,error_messages={'required': ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
-    last_name = serializers.CharField(max_length=20, required=True, error_messages={'required': ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
-    email = serializers.EmailField(required=True, error_messages={'required':  ERROR_MESSAGES["EMAIL_REQUIRED"]})
-    username = serializers.CharField(max_length=10, required=True, error_messages={'required':ERROR_MESSAGES["USERNAME_REQUIRED"]})
-    password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,error_messages={'required': ERROR_MESSAGES["PASSWORD_REQUIRED"]})
-    password2 = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,error_messages={'required': ERROR_MESSAGES["PASSWORD_CONFIRMED"]})
+    first_name = serializers.CharField(max_length=20, trim_whitespace=False,required=True,error_messages=Validation['first_name'])
+    last_name = serializers.CharField(max_length=20, required=True, trim_whitespace=False,error_messages=Validation['last_name'])
+    email = serializers.EmailField(max_length=20,required=True,trim_whitespace=False,error_messages=Validation['email'])
+    username = serializers.CharField(max_length=10, required=True,trim_whitespace=False,error_messages=Validation['username'])
+    password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False,error_messages=Validation['password'])
+    password2 = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False)
 
     def validate(self, data):
             """
@@ -23,58 +23,57 @@ class RegistrationSerializer(serializers.ModelSerializer):
             password = data.get('password')
             password2 = data.get('password2')
 
-            if password == password2:
-                if EmployeeDetails.objects.filter(username=username).exists():
-                    raise serializers.ValidationError(ERROR_MESSAGES["USERNAME_EXISTS"])
-                elif EmployeeDetails.objects.filter(email=email).exists():
-                    raise serializers.ValidationError(ERROR_MESSAGES["EMAIL_EXISTS"])
-                else :
-                    raise serializers.ValidationError(ERROR_MESSAGES[ "PASSWORDS_DO_NOT_MATCH"])
+            if EmployeeDetails.objects.filter(username=username).exists():
+                raise serializers.ValidationError(Validation['username']['exists'])
+            if EmployeeDetails.objects.filter(email=email).exists():
+                raise serializers.ValidationError(Validation['email']['exists'])
+            if password != password2:
+                raise serializers.ValidationError(Validation['password']['do_not_match'])
             return data
 
     def validate_first_name(self, value):
         """
         Validate first name to ensure it contains only alphabetic characters, and no spaces
         """
-        if not value.isalpha() or ' ' in value:
-            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_FIRST_NAME"])
+        if not value or not value.isalpha() or ' ' in value:
+            raise serializers.ValidationError(Validation['first_name']['invalid'])
         return value
-
 
     def validate_last_name(self, value):
         """
         Validate last name to ensure it contains only alphabetic characters, and no spaces
         """
-        if not value.isalpha() or ' ' in value:
-            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_LAST_NAME"])
+        if not value or not value.isalpha() or ' ' in value:
+            raise serializers.ValidationError(Validation['last_name']['invalid'])
         return value
 
     def validate_email(self, value):
         """
         Validate email address to ensure it is in a valid format, and contains no spaces
         """
-        if ' ' in value or '@' not in value:
-            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_EMAIL"])
+        if not value or ' ' in value or '@' not in value:
+            raise serializers.ValidationError(Validation['email']['invalid'])
         return value
 
     def validate_username(self, value):
         """
         Validate username to ensure it only contains alphanumeric characters and underscores, and no spaces
         """
-        if not value.isalnum() or ' ' in value:
-            raise serializers.ValidationError(ERROR_MESSAGES["INVALID_USERNAME"])
+        if not value or not value.isalnum() or ' ' in value:
+            raise serializers.ValidationError(Validation['username']['invalid'])
         return value
 
     def validate_password(self, value):
         """
         Validate if password contains uppercase, lowercase, digit, space and special character.
         """
-        if not any(char.isupper() for char in value) or \
+
+        if not value or not any(char.isupper() for char in value) or \
            not any(char.islower() for char in value) or \
            not any(char.isdigit() for char in value) or \
            not any(char in "!@#$%^&*()-_+=[]{};:'\"<>,.?/\\|" for char in value) or \
            " " in value:
-           raise serializers.ValidationError(ERROR_MESSAGES["INVALID_PASSWORD"])
+           raise serializers.ValidationError(Validation['password']['invalid'])
         return value
 
     def create(self, validated_data):
@@ -96,10 +95,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.ModelSerializer):
     """
-     Serializers Login allows user to log-in
+     Serializers Login allows only valid user to log-in
     """
-    username = serializers.CharField(max_length=10, required=True, error_messages={'required': ERROR_MESSAGES["USERNAME_REQUIRED"]})
-    password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True, error_messages={'required': ERROR_MESSAGES["PASSWORD_REQUIRED"]})
+    username = serializers.CharField(max_length=10, required=True, trim_whitespace=False,
+                                     error_messages=Validation['username'])
+    password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True, trim_whitespace=False,
+                                     error_messages=Validation['password'])
 
     def validate(self, data):
         """
@@ -110,7 +111,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
         user = authenticate(username=username, password=password)
         if not user:
-            raise serializers.ValidationError('Incorrect credentials')
+            raise serializers.ValidationError(RESPONSE_MESSAGES['login']['failed'])
 
         data['user'] = user
         return data
@@ -126,10 +127,10 @@ class EmployeeProfileSerializer(serializers.ModelSerializer):
     """
     Serializers EmployeeProfile display the data to logged-in user.
     """
-    first_name = serializers.CharField(max_length=20, required=True,error_messages={'required': ERROR_MESSAGES["FIRST_NAME_REQUIRED"]})
-    last_name = serializers.CharField(max_length=20, required=True,error_messages={'required': ERROR_MESSAGES["LAST_NAME_REQUIRED"]})
-    email = serializers.EmailField(required=True, error_messages={'required': ERROR_MESSAGES["EMAIL_REQUIRED"]})
-    username = serializers.CharField(max_length=10, required=True,error_messages={'required': ERROR_MESSAGES["USERNAME_REQUIRED"]})
+    first_name = serializers.CharField(max_length=20, required=True)
+    last_name = serializers.CharField(max_length=20, required=True)
+    email = serializers.EmailField(required=True)
+    username = serializers.CharField(max_length=10, required=True)
 
     class Meta:
         """
