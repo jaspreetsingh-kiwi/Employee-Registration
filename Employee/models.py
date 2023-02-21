@@ -15,3 +15,14 @@ class EmployeeDetails(AbstractUser):
 
     class Meta:
         db_table = 'Employee'
+
+class Department(models.Model):
+    """
+    The Department model with different fields.
+    """
+    dept_name = models.CharField(max_length=20)
+    language = models.CharField(max_length=20)
+    dept_size = models.IntegerField()
+
+    class Meta:
+        db_table = 'Department'

@@ -4,9 +4,7 @@ It contains Validation messages, Success messages and Response messages which ca
 Validation = {
     'first_name': {
         "blank": "Please provide a first name.",
-        "invalid": "First name should not be blank."
-                   "It must contain only alphabetic characters, and no spaces."
-                   "Also make sure first name should start with a capital letter."
+        "invalid": "First name should not be blank.\nIt must contain only alphabetic characters, and no spaces.\n Also make sure first name should start with a capital letter."
     },
     'last_name': {
         "blank": "Please provide a last name.",
@@ -32,7 +30,7 @@ Validation = {
         "do_not_match":"Passwords do not match.",
     },
 }
-
+print(Validation['first_name']['invalid'])
 RESPONSE_MESSAGES = {
     "registration":{
     "success":"Employee register successfully",
@@ -45,9 +43,8 @@ RESPONSE_MESSAGES = {
         }
 }
 SUCCESS_MESSAGES = {
-    "CREATED_SUCCESSFULLY" : "Employee created successfully",
-    "UPDATE_SUCCESSFULLY": "Employee updated successfully",
-    "DELETE_SUCCESSFULLY": "Employee deleted successfully",
-
+    "CREATED_SUCCESSFULLY" : "Department created successfully",
+    "UPDATE_SUCCESSFULLY": "Department updated successfully",
+    "DELETE_SUCCESSFULLY": "Department deleted successfully",
 }
 

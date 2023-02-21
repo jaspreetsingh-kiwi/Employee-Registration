@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import EmployeeDetails
+from .models import EmployeeDetails, Department
 from .messages import *
 from django.contrib.auth import authenticate
 
@@ -47,13 +47,13 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(Validation['last_name']['invalid'])
         return value
 
-    def validate_email(self, value):
-        """
-        Validate email address to ensure it is in a valid format, and contains no spaces
-        """
-        if not value or ' ' in value or '@' not in value:
-            raise serializers.ValidationError(Validation['email']['invalid'])
-        return value
+    # def validate_email(self, value):
+    #     """
+    #     Validate email address to ensure it is in a valid format, and contains no spaces
+    #     """
+    #     if not value or ' ' in value or '@' not in value:
+    #         raise serializers.ValidationError(Validation['email']['invalid'])
+    #     return value
 
     def validate_username(self, value):
         """
@@ -126,18 +126,52 @@ class LoginSerializer(serializers.ModelSerializer):
         model = EmployeeDetails
         fields = ['username', 'password']
 
-class EmployeeProfileSerializer(serializers.ModelSerializer):
+class DepartmentCreateSerializer(serializers.ModelSerializer):
     """
-    Serializers EmployeeProfile display the data to logged-in user.
+    Serializers DepartmentCreate creates a new Department.
     """
-    first_name = serializers.CharField(max_length=20, required=True)
-    last_name = serializers.CharField(max_length=20, required=True)
-    email = serializers.EmailField(required=True)
-    username = serializers.CharField(max_length=10, required=True)
+    dept_name = serializers.CharField(max_length=20, required=True)
+    language = serializers.CharField(max_length=20, required=True)
+    dept_size = serializers.IntegerField()
+
+
+    def create(self, validated_data):
+        """
+        Override the create method to add custom behavior when creating a new Department instance
+        """
+        dept = Department.objects.create(**validated_data)
+        return dept
 
     class Meta:
         """
         Use the Meta class to specify the model and fields that the serializer should work with
         """
-        model = EmployeeDetails
-        fields = ['id', 'first_name', 'last_name', 'email', 'username']
+        model = Department
+        fields = ['id', 'dept_name', 'language', 'dept_size',]
+
+
+class DepartmentUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializers DepartmentCreate updatess an existing Department.
+    """
+    dept_name = serializers.CharField(max_length=20, required=True)
+    language = serializers.CharField(max_length=20, required=True)
+    dept_size = serializers.IntegerField()
+
+    def update(self, instance, validated_data):
+        """
+         Override the update method to add custom behavior when updating an existing Employee instance
+        """
+        dept = Department.objects.filter(id=instance.id).update(
+            dept_name=validated_data['dept_name'],
+            language=validated_data['language'],
+            dept_size=validated_data['dept_size'],
+        )
+        return dept
+
+    class Meta:
+        """
+        Use the Meta class to specify the model and fields that the serializer should work with
+        """
+        model = Department
+        fields = ['id', 'dept_name', 'language', 'dept_size', ]
