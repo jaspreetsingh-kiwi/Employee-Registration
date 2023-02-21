@@ -1,12 +1,18 @@
-
+"""
+It contains Validation messages, Success messages and Response messages which can be import to other files
+"""
 Validation = {
     'first_name': {
         "blank": "Please provide a first name.",
-        "invalid": "First name cannot be blank. First name must contain only alphabetic characters, and no spaces",
+        "invalid": "First name cannot be blank."
+                   "It must contain only alphabetic characters, and no spaces."
+                   "Also make sure first name should start with a capital letter."
     },
     'last_name': {
         "blank": "Please provide a last name.",
-        "invalid": "Last name cannot be blank.Last name must contain only alphabetic characters, and no spaces",
+        "invalid": "Last name cannot be blank."
+                   "It must contain only alphabetic characters, and no spaces."
+                   "Also make sure last name should start with a capital letter.",
     },
     'email':{
         "blank": "Please provide a email.",
@@ -20,7 +26,7 @@ Validation = {
 
     },
     'password': {
-        "blank": "Please provide a username.",
+        "blank": "Please provide a password.",
         "invalid": "Password is invalid.Password must contain uppercase, lowercase, digit, and special character and no spaces.",
         "do_not_match":"Passwords do not match."
     },

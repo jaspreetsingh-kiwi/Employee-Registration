@@ -7,10 +7,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
     """
     Serializers registration requests and creates a new user.
     """
-    first_name = serializers.CharField(max_length=20, trim_whitespace=False,required=True,error_messages=Validation['first_name'])
-    last_name = serializers.CharField(max_length=20, required=True, trim_whitespace=False,error_messages=Validation['last_name'])
-    email = serializers.EmailField(max_length=20,required=True,trim_whitespace=False,error_messages=Validation['email'])
-    username = serializers.CharField(max_length=10, required=True,trim_whitespace=False,error_messages=Validation['username'])
+    first_name = serializers.CharField(max_length=50, min_length=2,trim_whitespace=False,required=True,error_messages=Validation['first_name'])
+    last_name = serializers.CharField(max_length=50, required=True, trim_whitespace=False,error_messages=Validation['last_name'])
+    email = serializers.EmailField(max_length=30,required=True,trim_whitespace=False,error_messages=Validation['email'])
+    username = serializers.CharField(max_length=30, required=True,trim_whitespace=False,error_messages=Validation['username'])
     password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False,error_messages=Validation['password'])
     password2 = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False)
 
@@ -33,9 +33,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def validate_first_name(self, value):
         """
-        Validate first name to ensure it contains only alphabetic characters, and no spaces
+        Validate first name to ensure it contains only alphabetic characters, and no spaces & should start with capital
         """
-        if not value or not value.isalpha() or ' ' in value:
+        if not value or not value.isalpha() or ' ' in value or not value[0].isupper():
             raise serializers.ValidationError(Validation['first_name']['invalid'])
         return value
 
@@ -43,7 +43,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         """
         Validate last name to ensure it contains only alphabetic characters, and no spaces
         """
-        if not value or not value.isalpha() or ' ' in value:
+        if not value or not value.isalpha() or ' ' in value or not value[0].isupper():
             raise serializers.ValidationError(Validation['last_name']['invalid'])
         return value
 
@@ -59,8 +59,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         """
         Validate username to ensure it only contains alphanumeric characters and underscores, and no spaces
         """
-        if not value or not value.isalnum() or ' ' in value:
-            raise serializers.ValidationError(Validation['username']['invalid'])
+        if not value or not value.isalnum() or ' ' in value or \
+           not any(char.isdigit() for char in value) or \
+           not any(char.isalpha() for char in value):
+           raise serializers.ValidationError(Validation['username']['invalid'])
         return value
 
     def validate_password(self, value):
@@ -68,7 +70,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         Validate if password contains uppercase, lowercase, digit, space and special character.
         """
 
-        if not value or not any(char.isupper() for char in value) or \
+        if not value or ' ' in value or \
+           not any(char.isupper() for char in value) or \
            not any(char.islower() for char in value) or \
            not any(char.isdigit() for char in value) or \
            not any(char in "!@#$%^&*()-_+=[]{};:'\"<>,.?/\\|" for char in value) or \
@@ -78,7 +81,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Override the create method to add custom behavior when creating a new Employee instance
+        Override the create method to add custom behavior when creating a new EmployeeDetails instance
         """
         password2 = validated_data.pop('password2')
         emp = EmployeeDetails.objects.create(**validated_data)
@@ -97,14 +100,14 @@ class LoginSerializer(serializers.ModelSerializer):
     """
      Serializers Login allows only valid user to log-in
     """
-    username = serializers.CharField(max_length=10, required=True, trim_whitespace=False,
+    username = serializers.CharField(max_length=30, required=True, trim_whitespace=False,
                                      error_messages=Validation['username'])
     password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True, trim_whitespace=False,
                                      error_messages=Validation['password'])
 
     def validate(self, data):
         """
-        Validate if username or password is incorrect.
+        Validate if username and password is incorrect.
         """
         username = data.get('username')
         password = data.get('password')

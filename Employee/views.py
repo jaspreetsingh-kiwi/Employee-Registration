@@ -31,7 +31,7 @@ class EmployeeRegisterViewSet(viewsets.ModelViewSet):
 
 class EmployeeLoginViewSet(viewsets.ModelViewSet):
     """
-    The EmployeeLoginViewSet class allows user to log-in.
+    The EmployeeLoginViewSet class allows only valid user to log-in.
     """
     queryset =  EmployeeDetails
     serializer_class = LoginSerializer
@@ -63,27 +63,27 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        The get_queryset method returns a queryset of Employee Model objects.
+        The get_queryset method returns a queryset of EmployeeDetails Model objects.
         """
         return EmployeeDetails.objects.filter().order_by('id')
 
     def list(self, request, *args, **kwargs):
         """
-         Returns a list of all instances of the Employee model.
+         Returns a list of all instances of the EmployeeDetails model.
         """
         serializer = self.serializer_class(self.get_queryset(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, *args, **kwargs):
         """
-        Retrieves a single instance of the Employee model, based on the primary key (pk).
+        Retrieves a single instance of the EmployeeDetails model, based on the primary key (pk).
         """
         serializer = self.serializer_class(self.get_object())
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
         """
-        Creates a new instance of the Employee model.
+        Creates a new instance of the EmployeeDetails model.
         """
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -94,7 +94,7 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         """
-        Updates an existing instance of the Employee model, based on the primary key (pk).
+        Updates an existing instance of the EmployeeDetails model, based on the primary key (pk).
         """
         emp = self.get_object()
         serializer = self.serializer_class(emp, data=request.data)
@@ -105,7 +105,7 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, *args, **kwargs):
         """
-        Partial Updates an existing instance of the Employee model, based on the primary key (pk).
+        Partial Updates an existing instance of the EmployeeDetails model, based on the primary key (pk).
         """
         emp = self.get_object()
         serializer = self.serializer_class(emp, data=request.data, partial=True)
@@ -116,7 +116,7 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         """
-        Deletes a single instance of the Employee model, based on the primary key (pk).
+        Deletes a single instance of the EmployeeDetails model, based on the primary key (pk).
         """
         self.get_object().delete()
         return Response({'message': SUCCESS_MESSAGES["DELETED_SUCCESSFULLY"]})
