@@ -20,7 +20,7 @@ class EmployeeRegisterViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """
-        Creates a new instance of the Employee model.
+        Creates a new instance of the EmployeeDetails model.
         """
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():

@@ -47,20 +47,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(Validation['last_name']['invalid'])
         return value
 
-    # def validate_email(self, value):
-    #     """
-    #     Validate email address to ensure it is in a valid format, and contains no spaces
-    #     """
-    #     if not value or ' ' in value or '@' not in value:
-    #         raise serializers.ValidationError(Validation['email']['invalid'])
-    #     return value
-
     def validate_username(self, value):
         """
         Validate username to ensure it only contains alphanumeric characters and underscores, and no spaces
         """
         if not value or not value.isalnum() or ' ' in value or \
-           not any(char.isdigit() for char in value) or \
            not any(char.isalpha() for char in value):
            raise serializers.ValidationError(Validation['username']['invalid'])
         return value
