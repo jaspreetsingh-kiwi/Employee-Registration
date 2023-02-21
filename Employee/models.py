@@ -11,7 +11,7 @@ class EmployeeDetails(AbstractUser):
     last_name = models.CharField(max_length=20)
     email = models.EmailField()
     username = models.CharField(max_length=10, unique=True)
-    password = models.CharField(max_length=10)
+    password = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'Employee'

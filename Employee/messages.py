@@ -4,20 +4,20 @@ It contains Validation messages, Success messages and Response messages which ca
 Validation = {
     'first_name': {
         "blank": "Please provide a first name.",
-        "invalid": "First name cannot be blank."
+        "invalid": "First name should not be blank."
                    "It must contain only alphabetic characters, and no spaces."
                    "Also make sure first name should start with a capital letter."
     },
     'last_name': {
         "blank": "Please provide a last name.",
-        "invalid": "Last name cannot be blank."
+        "invalid": "Last name should not be blank."
                    "It must contain only alphabetic characters, and no spaces."
                    "Also make sure last name should start with a capital letter.",
     },
     'email':{
         "blank": "Please provide a email.",
-        "invalid": "Email is not valid",
-        "exists": "Email already exists",
+        "invalid": "email is not valid",
+        "exists": "email already exists",
     },
     'username': {
         "blank": "Please provide a username.",
@@ -27,8 +27,9 @@ Validation = {
     },
     'password': {
         "blank": "Please provide a password.",
-        "invalid": "Password is invalid.Password must contain uppercase, lowercase, digit, and special character and no spaces.",
-        "do_not_match":"Passwords do not match."
+        "invalid": "Password is invalid."
+                   "It must contain an uppercase, lowercase, digit, and special character and no spaces.",
+        "do_not_match":"Passwords do not match.",
     },
 }
 
@@ -39,7 +40,8 @@ RESPONSE_MESSAGES = {
     },
     "login":{
         "success":"Login successfully",
-        "failed":"Login failed.Invalid Credentials",
+        "failed":"Login failed."
+                 "Invalid Credentials",
         }
 }
 SUCCESS_MESSAGES = {

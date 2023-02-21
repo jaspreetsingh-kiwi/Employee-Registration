@@ -23,13 +23,12 @@ router = DefaultRouter()
 """
 Routing for Registration, Login & Display
 """
-
 router.register('register', views.EmployeeRegisterViewSet, basename='register')
 router.register('login', views.EmployeeLoginViewSet, basename='login'),
 router.register('display', views.EmployeeProfileViewSet, basename='display')
 
 urlpatterns = [
     path('', include(router.urls)),
-   path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+   path('employee/', schema_view.with_ui('swagger', cache_timeout=0), name='employee'),
 
 ]
