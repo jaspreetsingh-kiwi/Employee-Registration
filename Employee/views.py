@@ -97,7 +97,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
             print(serializer.data)
-            return Response({'message':SUCCESS_MESSAGES['CREATED_SUCCESSFULLY'] , 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message':SUCCESS_MESSAGES['CREATED']['SUCCESSFULLY'] , 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response({'errors': serializer.errors}, status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
@@ -108,7 +108,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(dept, data=request.data)
         if serializer.is_valid():
             serializer.update(dept, serializer.validated_data)
-            return Response({'message': SUCCESS_MESSAGES["UPDATED_SUCCESSFULLY"], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': SUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response({'errors': serializer.errors}, status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, *args, **kwargs):
@@ -119,7 +119,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(dept, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.update(dept, serializer.validated_data)
-            return Response({'message': SUCCESS_MESSAGES["UPDATED_SUCCESSFULLY"], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': SUCCESS_MESSAGESSUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response({'errors': serializer.errors}, status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
@@ -127,5 +127,5 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         Deletes a single instance of the Department model, based on the primary key (pk).
         """
         self.get_object().delete()
-        return Response({'message': SUCCESS_MESSAGES["DELETED_SUCCESSFULLY"]})
+        return Response({'message': SUCCESS_MESSAGES['DELETED']['SUCCESSFULLY']})
 

@@ -44,8 +44,14 @@ RESPONSE_MESSAGES = {
         }
 }
 SUCCESS_MESSAGES = {
-    "CREATED_SUCCESSFULLY" : "Department created successfully",
-    "UPDATED_SUCCESSFULLY": "Department updated successfully",
-    "DELETED_SUCCESSFULLY": "Department deleted successfully",
+    "CREATED":{
+    "SUCCESSFULLY" : "Department created successfully",
+    },
+    "UPDATED":{
+    "SUCCESSFULLY": "Department updated successfully",
+    },
+    "DELETED":{
+    "SUCCESSFULLY": "Department deleted successfully",
+    }
 }
 
