@@ -96,7 +96,6 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
-            print(serializer.data)
             return Response({'message':SUCCESS_MESSAGES['CREATED']['SUCCESSFULLY'] , 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 

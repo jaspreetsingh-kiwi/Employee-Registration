@@ -41,7 +41,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def validate_last_name(self, value):
         """
-        Validate last name to ensure it contains only alphabetic characters, and no spaces
+        Validate last name to ensure it contains only alphabetic characters, and no spaces & should start with capital
         """
         if not value or not value.isalpha() or ' ' in value or not value[0].isupper():
             raise serializers.ValidationError(Validation['last_name']['invalid'])
