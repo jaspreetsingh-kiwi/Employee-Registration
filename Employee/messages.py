@@ -1,6 +1,5 @@
-"""
-It contains Validation messages, Success messages and Response messages which can be import to other files
-"""
+# Create messages here
+
 Validation = {
     'first_name': {
         "blank": "Please provide a first name.",
