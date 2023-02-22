@@ -7,10 +7,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
     """
     Serializers registration requests and creates a new user.
     """
-    first_name = serializers.CharField(max_length=50, min_length=2,trim_whitespace=False,required=True,error_messages=Validation['first_name'])
-    last_name = serializers.CharField(max_length=50, required=True, trim_whitespace=False,error_messages=Validation['last_name'])
+    first_name = serializers.CharField(min_length=3,max_length=50,trim_whitespace=False,required=True,error_messages=Validation['first_name'])
+    last_name = serializers.CharField(min_length=3,max_length=50, required=True, trim_whitespace=False,error_messages=Validation['last_name'])
     email = serializers.EmailField(max_length=30,required=True,trim_whitespace=False,error_messages=Validation['email'])
-    username = serializers.CharField(max_length=30, required=True,trim_whitespace=False,error_messages=Validation['username'])
+    username = serializers.CharField(min_length=3,max_length=30, required=True,trim_whitespace=False,error_messages=Validation['username'])
     password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False,error_messages=Validation['password'])
     password2 = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False)
 
@@ -91,7 +91,7 @@ class LoginSerializer(serializers.ModelSerializer):
     """
      Serializers Login allows only valid user to log-in
     """
-    username = serializers.CharField(max_length=30, required=True, trim_whitespace=False,
+    username = serializers.CharField(min_length=3,max_length=30, required=True, trim_whitespace=False,
                                      error_messages=Validation['username'])
     password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True, trim_whitespace=False,
                                      error_messages=Validation['password'])
@@ -121,8 +121,8 @@ class DepartmentCreateSerializer(serializers.ModelSerializer):
     """
     Serializers DepartmentCreate creates a new Department.
     """
-    dept_name = serializers.CharField(max_length=20, required=True)
-    language = serializers.CharField(max_length=20, required=True)
+    dept_name = serializers.CharField(min_length=3,max_length=20, required=True)
+    language = serializers.CharField(min_length=3,max_length=20, required=True)
     dept_size = serializers.IntegerField()
 
 
@@ -145,13 +145,13 @@ class DepartmentUpdateSerializer(serializers.ModelSerializer):
     """
     Serializers DepartmentCreate updatess an existing Department.
     """
-    dept_name = serializers.CharField(max_length=20, required=True)
-    language = serializers.CharField(max_length=20, required=True)
+    dept_name = serializers.CharField(min_length=3,max_length=20, required=True)
+    language = serializers.CharField(min_length=3,max_length=20, required=True)
     dept_size = serializers.IntegerField()
 
     def update(self, instance, validated_data):
         """
-         Override the update method to add custom behavior when updating an existing Employee instance
+         Override the update method to add custom behavior when updating an existing Department instance
         """
         dept = Department.objects.filter(id=instance.id).update(
             dept_name=validated_data['dept_name'],

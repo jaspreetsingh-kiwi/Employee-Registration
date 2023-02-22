@@ -26,7 +26,7 @@ class EmployeeRegisterViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
             return Response({'message': RESPONSE_MESSAGES['registration']['success'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
-        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EmployeeLoginViewSet(viewsets.ModelViewSet):
@@ -51,7 +51,7 @@ class EmployeeLoginViewSet(viewsets.ModelViewSet):
                 'message' : RESPONSE_MESSAGES['login']['success'],
             }, status=status.HTTP_200_OK)
 
-        return Response({'errors':serializer.errors}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     """
@@ -98,7 +98,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
             serializer.create(serializer.validated_data)
             print(serializer.data)
             return Response({'message':SUCCESS_MESSAGES['CREATED']['SUCCESSFULLY'] , 'data': serializer.data}, status=status.HTTP_201_CREATED)
-        return Response({'errors': serializer.errors}, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         """
@@ -109,7 +109,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.update(dept, serializer.validated_data)
             return Response({'message': SUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
-        return Response({'errors': serializer.errors}, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, *args, **kwargs):
         """
@@ -120,7 +120,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.update(dept, serializer.validated_data)
             return Response({'message': SUCCESS_MESSAGESSUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
-        return Response({'errors': serializer.errors}, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         """
