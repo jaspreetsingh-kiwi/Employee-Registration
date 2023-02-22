@@ -118,7 +118,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(dept, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.update(dept, serializer.validated_data)
-            return Response({'message': SUCCESS_MESSAGESSUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': SUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
