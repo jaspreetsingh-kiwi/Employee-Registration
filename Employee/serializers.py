@@ -123,7 +123,7 @@ class DepartmentCreateSerializer(serializers.ModelSerializer):
     """
     dept_name = serializers.CharField(min_length=3,max_length=20, required=True)
     language = serializers.CharField(min_length=3,max_length=20, required=True)
-    dept_size = serializers.IntegerField()
+    dept_size = serializers.IntegerField(required=True)
 
 
     def create(self, validated_data):
@@ -147,7 +147,7 @@ class DepartmentUpdateSerializer(serializers.ModelSerializer):
     """
     dept_name = serializers.CharField(min_length=3,max_length=20, required=True)
     language = serializers.CharField(min_length=3,max_length=20, required=True)
-    dept_size = serializers.IntegerField()
+    dept_size = serializers.IntegerField(required=True)
 
     def update(self, instance, validated_data):
         """
