@@ -153,11 +153,7 @@ class DepartmentUpdateSerializer(serializers.ModelSerializer):
         """
          Override the update method to add custom behavior when updating an existing Department instance
         """
-        dept = Department.objects.filter(id=instance.id).update(
-            dept_name=validated_data['dept_name'],
-            language=validated_data['language'],
-            dept_size=validated_data['dept_size'],
-        )
+        dept = Department.objects.filter(id=instance.id).update(**validated_data)
         return dept
 
     class Meta:
