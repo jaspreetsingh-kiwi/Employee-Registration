@@ -20,7 +20,7 @@ Validation = {
     },
     'username': {
         "blank": "Please provide a username.",
-        "invalid": "Username must contain alphanumeric characters, and no spaces",
+        "invalid": "Username must contain alpha or alphanumeric characters, and no spaces",
         "exists": "Username already taken",
 
     },
