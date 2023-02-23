@@ -1,35 +1,45 @@
+"""
+Provides serializers for Register,Login,Create & Update
+"""
 from rest_framework import serializers
-from .models import EmployeeDetails, Department
-from .messages import *
 from django.contrib.auth import authenticate
+from .models import EmployeeDetails, Department
+from .messages import Validation, RESPONSE_MESSAGES
+
 
 class RegistrationSerializer(serializers.ModelSerializer):
     """
-    Serializers registration requests and creates a new user.
+    Serializer registration requests and creates a new user.
     """
-    first_name = serializers.CharField(min_length=3,max_length=50,trim_whitespace=False,required=True,error_messages=Validation['first_name'])
-    last_name = serializers.CharField(min_length=3,max_length=50, required=True, trim_whitespace=False,error_messages=Validation['last_name'])
-    email = serializers.EmailField(max_length=30,required=True,trim_whitespace=False,error_messages=Validation['email'])
-    username = serializers.CharField(min_length=3,max_length=30, required=True,trim_whitespace=False,error_messages=Validation['username'])
-    password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False,error_messages=Validation['password'])
-    password2 = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,trim_whitespace=False)
+    first_name = serializers.CharField(min_length=3, max_length=50, trim_whitespace=False, required=True,
+                                       error_messages=Validation['first_name'])
+    last_name = serializers.CharField(min_length=3, max_length=50, required=True, trim_whitespace=False,
+                                      error_messages=Validation['last_name'])
+    email = serializers.EmailField(max_length=30, required=True, trim_whitespace=False,
+                                   error_messages=Validation['email'])
+    username = serializers.CharField(min_length=3, max_length=30, required=True, trim_whitespace=False,
+                                     error_messages=Validation['username'])
+    password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True, trim_whitespace=False,
+                                     error_messages=Validation['password'])
+    password2 = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True,
+                                      trim_whitespace=False)
 
     def validate(self, data):
-            """
-            Validate if password is correct,username or email already exists.
-            """
-            username = data.get('username')
-            email = data.get('email')
-            password = data.get('password')
-            password2 = data.get('password2')
+        """
+        Validate if password is correct,username or email already exists.
+        """
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+        password2 = data.get('password2')
 
-            if EmployeeDetails.objects.filter(username=username).exists():
-                raise serializers.ValidationError(Validation['username']['exists'])
-            if EmployeeDetails.objects.filter(email=email).exists():
-                raise serializers.ValidationError(Validation['email']['exists'])
-            if password != password2:
-                raise serializers.ValidationError(Validation['password']['do_not_match'])
-            return data
+        if EmployeeDetails.objects.filter(username=username).exists():
+            raise serializers.ValidationError(Validation['username']['exists'])
+        if EmployeeDetails.objects.filter(email=email).exists():
+            raise serializers.ValidationError(Validation['email']['exists'])
+        if password != password2:
+            raise serializers.ValidationError(Validation['password']['do_not_match'])
+        return data
 
     def validate_first_name(self, value):
         """
@@ -52,22 +62,21 @@ class RegistrationSerializer(serializers.ModelSerializer):
         Validate username to ensure it only contains alphanumeric characters and underscores, and no spaces
         """
         if not value or not value.isalnum() or ' ' in value or \
-           not any(char.isalpha() for char in value):
-           raise serializers.ValidationError(Validation['username']['invalid'])
+                not any(char.isalpha() for char in value):
+            raise serializers.ValidationError(Validation['username']['invalid'])
         return value
 
     def validate_password(self, value):
         """
         Validate if password contains uppercase, lowercase, digit, space and special character.
         """
-
         if not value or ' ' in value or \
-           not any(char.isupper() for char in value) or \
-           not any(char.islower() for char in value) or \
-           not any(char.isdigit() for char in value) or \
-           not any(char in "!@#$%^&*()-_+=[]{};:'\"<>,.?/\\|" for char in value) or \
-           " " in value:
-           raise serializers.ValidationError(Validation['password']['invalid'])
+                not any(char.isupper() for char in value) or \
+                not any(char.islower() for char in value) or \
+                not any(char.isdigit() for char in value) or \
+                not any(char in "!@#$%^&*()-_+=[]{};:'\"<>,.?/\\|" for char in value) or \
+                " " in value:
+            raise serializers.ValidationError(Validation['password']['invalid'])
         return value
 
     def create(self, validated_data):
@@ -87,11 +96,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = EmployeeDetails
         fields = ['id', 'first_name', 'last_name', 'email', 'username', 'password', 'password2']
 
+
 class LoginSerializer(serializers.ModelSerializer):
     """
-     Serializers Login allows only valid user to log-in
+     Serializer Login allows only valid user to log-in
     """
-    username = serializers.CharField(min_length=3,max_length=30, required=True, trim_whitespace=False,
+    username = serializers.CharField(min_length=3, max_length=30, required=True, trim_whitespace=False,
                                      error_messages=Validation['username'])
     password = serializers.CharField(max_length=10, min_length=8, write_only=True, required=True, trim_whitespace=False,
                                      error_messages=Validation['password'])
@@ -117,14 +127,14 @@ class LoginSerializer(serializers.ModelSerializer):
         model = EmployeeDetails
         fields = ['username', 'password']
 
+
 class DepartmentCreateSerializer(serializers.ModelSerializer):
     """
     Serializers DepartmentCreate creates a new Department.
     """
-    dept_name = serializers.CharField(min_length=3,max_length=20, required=True)
-    language = serializers.CharField(min_length=3,max_length=20, required=True)
+    dept_name = serializers.CharField(min_length=3, max_length=20, required=True)
+    language = serializers.CharField(min_length=3, max_length=20, required=True)
     dept_size = serializers.IntegerField(required=True)
-
 
     def create(self, validated_data):
         """
@@ -138,20 +148,21 @@ class DepartmentCreateSerializer(serializers.ModelSerializer):
         Use the Meta class to specify the model and fields that the serializer should work with
         """
         model = Department
-        fields = ['id', 'dept_name', 'language', 'dept_size',]
+        fields = ['id', 'dept_name', 'language', 'dept_size', ]
 
 
 class DepartmentUpdateSerializer(serializers.ModelSerializer):
     """
-    Serializers DepartmentCreate updatess an existing Department.
+    Serializers DepartmentCreate updates an existing Department.
     """
-    dept_name = serializers.CharField(min_length=3,max_length=20, required=True)
-    language = serializers.CharField(min_length=3,max_length=20, required=True)
+    dept_name = serializers.CharField(min_length=3, max_length=20, required=True)
+    language = serializers.CharField(min_length=3, max_length=20, required=True)
     dept_size = serializers.IntegerField(required=True)
 
     def update(self, instance, validated_data):
         """
-         Override the update method to add custom behavior when updating an existing Department instance
+         Override the update method to add custom behavior
+         when updating an existing Department instance
         """
         dept = Department.objects.filter(id=instance.id).update(**validated_data)
         return dept

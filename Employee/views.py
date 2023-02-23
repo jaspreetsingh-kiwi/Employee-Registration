@@ -1,13 +1,16 @@
-# Create your views here.
-import rest_framework_simplejwt.authentication
+"""
+Provides views for Register,Login,Create & Update
+"""
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .messages import *
-from .models import EmployeeDetails, Department
-from .serializers import RegistrationSerializer, LoginSerializer, DepartmentCreateSerializer,DepartmentUpdateSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .messages import SUCCESS_MESSAGES, RESPONSE_MESSAGES
+from .models import EmployeeDetails, Department
+from .serializers import RegistrationSerializer, LoginSerializer, \
+    DepartmentCreateSerializer, DepartmentUpdateSerializer
+
 
 # Create your views here.
 class EmployeeRegisterViewSet(viewsets.ModelViewSet):
@@ -25,7 +28,8 @@ class EmployeeRegisterViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
-            return Response({'message': RESPONSE_MESSAGES['registration']['success'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': RESPONSE_MESSAGES['registration']['success'], 'data': serializer.data},
+                            status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -33,7 +37,7 @@ class EmployeeLoginViewSet(viewsets.ModelViewSet):
     """
     The EmployeeLoginViewSet class allows only valid user to log-in.
     """
-    queryset =  EmployeeDetails
+    queryset = EmployeeDetails
     serializer_class = LoginSerializer
     http_method_names = ['post']
 
@@ -48,10 +52,11 @@ class EmployeeLoginViewSet(viewsets.ModelViewSet):
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
-                'message' : RESPONSE_MESSAGES['login']['success'],
+                'message': RESPONSE_MESSAGES['login']['success'],
             }, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     """
@@ -96,7 +101,8 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.create(serializer.validated_data)
-            return Response({'message':SUCCESS_MESSAGES['CREATED']['SUCCESSFULLY'] , 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': SUCCESS_MESSAGES['CREATED']['SUCCESSFULLY'], 'data': serializer.data},
+                            status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
@@ -107,7 +113,8 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(dept, data=request.data)
         if serializer.is_valid():
             serializer.update(dept, serializer.validated_data)
-            return Response({'message': SUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': SUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data},
+                            status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, *args, **kwargs):
@@ -118,7 +125,8 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(dept, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.update(dept, serializer.validated_data)
-            return Response({'message': SUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({'message': SUCCESS_MESSAGES['UPDATED']['SUCCESSFULLY'], 'data': serializer.data},
+                            status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
@@ -127,4 +135,3 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         """
         self.get_object().delete()
         return Response({'message': SUCCESS_MESSAGES['DELETED']['SUCCESSFULLY']})
-
